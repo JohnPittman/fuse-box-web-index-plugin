@@ -9,7 +9,7 @@
         "build-docs":
             "rm -rf docs && typedoc --out docs --theme minimal --mode file --exclude **/*.test.ts src",
         "build-example-1":
-            "rm -rf example/dist && clear && cross-env NODE_ENV=production ts-node examples/fuse.ts",
+            "rm -rf examples/dist && clear && cross-env NODE_ENV=production ts-node examples/fuse.ts",
         "lint": "tslint --fix \"src/**/*.{ts,tsx}\"",
         "prepare": "npm run test && npm run build",
         "test": "jest -o",

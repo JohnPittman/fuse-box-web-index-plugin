@@ -25,6 +25,7 @@ export interface WebIndexPluginOptions {
             [key: string]: string;
         };
     };
+    // Templates are callback that return a ES6 template string.
     // Provide a path to your own template.
     template?: ((state: any) => string) | string;
 }
@@ -154,11 +155,15 @@ export class WebIndexPlugin implements Plugin {
         // Create other tags entries.
         if (otherTags !== null) {
             for (const key in otherTags) {
-                if (otherTags[key] !== undefined) {
+                // Remove $ if it exist.
+                if (key.charAt(0) === '$') {
+                    templateState[key.substring(1)] = otherTags[key];
+                } else {
                     templateState[key] = otherTags[key];
                 }
             }
         }
+        // console.log(templateState);
 
         // Acquire index.html template.
         let indexHTML;
