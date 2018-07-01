@@ -5,6 +5,7 @@ import c from './c';
 
 import './index.css';
 
+// Test.
 a('a');
 b('b');
 c('c');
