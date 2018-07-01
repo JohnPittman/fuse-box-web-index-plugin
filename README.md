@@ -26,47 +26,59 @@ $ npm i @chickendinosaur/fuse-box-web-index-plugin
 
 ```
 $ npm i
-```
-
-*   [Example 1](./examples/fuse.ts)
-
-```
 $ npm run build-example-1
 ```
+
+Output will be in <b>examples/dist</b>.
 
 ## Usage
 
 <b>MUST RUN AFTER QUANTUM FOR CSS FILES TO BE ACCESSED.</b>
 
-### Options
+*   [Example](./examples/fuse.ts)
 
 ```javascript
-interface WebIndexPluginOptions {
-    // The main filename. Default is `index.html`.
-    outFilePath?: string;
-    // The relative url bundles are served from. Default is `/`. Empty is set with `.`
-    publicPath?: string;
-    tags?: {
-        // Template placeholder names. Bundle tags all start with a '$'.
-        // Leaving any of these as 'undefined' will generate a default tag and order.
-        $scriptBundles?: (bundlePath: string, filename: string) => TagInfo,
-        $cssBundles?: (bundlePath: string, filename: string) => TagInfo,
-        other?: {
-            // Key value pairs. The keys can be anything you want although I prefer staying with a '$' for consitency.
-            [key: string]: string
-        }
-    };
-    // Provide a path to your own template.
-    template?: ((state: any) => string) | string;
-}
+import WebIndexPlugin from '@chickendinosaur/fuse-box-web-index-plugin';
 
-interface TagInfo {
-    // Order in which the tag will appear relative to 0.
-    // All tags without and order number are considered at position 0.
-    orderNum?: number;
-    // Full resource tag. Ex. <link type="text/stylesheet" href="/path" preload>
-    tag: string;
-}
+WebIndexPlugin({
+    outFilePath: 'index.html',
+    publicPath: 'http://www.google.com/',
+    tags: {
+        $scriptBundles: (bundlePath, filename) => {
+            const tag = `\n<script type="text/javascript" src=${bundlePath} defer></script>`;
+
+            switch (filename) {
+                case 'app.js':
+                    return {
+                        orderNum: -1,
+                        tag
+                    };
+                case 'vendor.js':
+                    return {
+                        tag
+                    };
+                default:
+                    return { tag: '' };
+            }
+        },
+        $cssBundles: (bundlePath, filename) => {
+            const tag = `\n<link type="text/stylesheet" href=${bundlePath} preload>`;
+
+            switch (filename) {
+                case 'styles.css':
+                    return {
+                        tag
+                    };
+                default:
+                    return { tag: '' };
+            }
+        }
+    },
+    template: 'src/templates/index.ts',
+    $: {
+        $title: 'Custom Title'
+    }
+});
 ```
 
 # Development

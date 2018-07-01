@@ -941,39 +941,54 @@ img { max-width: 100%; }
 			</ul>
 			<h2 id="examples">Examples</h2>
 			<pre><code><span class="hljs-meta">$</span><span class="bash"> npm i</span>
-</code></pre><ul>
-				<li><a href="./examples/fuse.ts">Example 1</a></li>
-			</ul>
-			<pre><code>$ npm <span class="hljs-keyword">run</span><span class="bash"> build-example-1</span>
-</code></pre><h2 id="usage">Usage</h2>
+<span class="hljs-meta">$</span><span class="bash"> npm run build-example-1</span>
+</code></pre><p>Output will be in <b>examples/dist</b>.</p>
+			<h2 id="usage">Usage</h2>
 			<p><b>MUST RUN AFTER QUANTUM FOR CSS FILES TO BE ACCESSED.</b></p>
-			<h3 id="options">Options</h3>
-			<pre><code class="lang-javascript">interface WebIndexPluginOptions {
-    <span class="hljs-comment">// The main filename. Default is `index.html`.</span>
-    outFilePath?: string;
-    <span class="hljs-comment">// The relative url bundles are served from. Default is `/`. Empty is set with `.`</span>
-    publicPath?: string;
-    tags?: {
-        <span class="hljs-comment">// Template placeholder names. Bundle tags all start with a '$'.</span>
-        <span class="hljs-comment">// Leaving any of these as 'undefined' will generate a default tag and order.</span>
-        $scriptBundles?: <span class="hljs-function">(<span class="hljs-params">bundlePath: string, filename: string</span>) =&gt;</span> TagInfo,
-        $cssBundles?: <span class="hljs-function">(<span class="hljs-params">bundlePath: string, filename: string</span>) =&gt;</span> TagInfo,
-        other?: {
-            <span class="hljs-comment">// Key value pairs. The keys can be anything you want although I prefer staying with a '$' for consitency.</span>
-            [key: string]: string
-        }
-    };
-    <span class="hljs-comment">// Provide a path to your own template.</span>
-    template?: <span class="hljs-function">(<span class="hljs-params">(state: any</span>) =&gt;</span> string) | string;
-}
+			<ul>
+				<li><a href="./examples/fuse.ts">Example</a></li>
+			</ul>
+			<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> WebIndexPlugin <span class="hljs-keyword">from</span> <span class="hljs-string">'@chickendinosaur/fuse-box-web-index-plugin'</span>;
 
-interface TagInfo {
-    <span class="hljs-comment">// Order in which the tag will appear relative to 0.</span>
-    <span class="hljs-comment">// All tags without and order number are considered at position 0.</span>
-    orderNum?: number;
-    <span class="hljs-comment">// Full resource tag. Ex. &lt;link type="text/stylesheet" href="/path" preload&gt;</span>
-    tag: string;
-}
+WebIndexPlugin({
+    <span class="hljs-attr">outFilePath</span>: <span class="hljs-string">'index.html'</span>,
+    <span class="hljs-attr">publicPath</span>: <span class="hljs-string">'http://www.google.com/'</span>,
+    <span class="hljs-attr">tags</span>: {
+        <span class="hljs-attr">$scriptBundles</span>: <span class="hljs-function">(<span class="hljs-params">bundlePath, filename</span>) =&gt;</span> {
+            <span class="hljs-keyword">const</span> tag = <span class="hljs-string">`\n&lt;script type="text/javascript" src=<span class="hljs-subst">${bundlePath}</span> defer&gt;&lt;/script&gt;`</span>;
+
+            <span class="hljs-keyword">switch</span> (filename) {
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'app.js'</span>:
+                    <span class="hljs-keyword">return</span> {
+                        <span class="hljs-attr">orderNum</span>: <span class="hljs-number">-1</span>,
+                        tag
+                    };
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'vendor.js'</span>:
+                    <span class="hljs-keyword">return</span> {
+                        tag
+                    };
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">return</span> { <span class="hljs-attr">tag</span>: <span class="hljs-string">''</span> };
+            }
+        },
+        <span class="hljs-attr">$cssBundles</span>: <span class="hljs-function">(<span class="hljs-params">bundlePath, filename</span>) =&gt;</span> {
+            <span class="hljs-keyword">const</span> tag = <span class="hljs-string">`\n&lt;link type="text/stylesheet" href=<span class="hljs-subst">${bundlePath}</span> preload&gt;`</span>;
+
+            <span class="hljs-keyword">switch</span> (filename) {
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'styles.css'</span>:
+                    <span class="hljs-keyword">return</span> {
+                        tag
+                    };
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">return</span> { <span class="hljs-attr">tag</span>: <span class="hljs-string">''</span> };
+            }
+        }
+    },
+    <span class="hljs-attr">template</span>: <span class="hljs-string">'src/templates/index.ts'</span>,
+    <span class="hljs-attr">$</span>: {
+        <span class="hljs-attr">$title</span>: <span class="hljs-string">'Custom Title'</span>
+    }
+});
 </code></pre>
 			<h1 id="development">Development</h1>
 			<h2 id="installation">Installation</h2>
