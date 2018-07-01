@@ -1,0 +1,15 @@
+FuseBox.pkg("module", {}, function(___scope___){
+___scope___.file("index.js", function(exports, require, module, __filename, __dirname){
+
+if (FuseBox.isServer) {
+    module.exports = global.require("module");
+} else {
+    module.exports = {
+        _load: FuseBox.import,
+        globalPaths: [],
+    };
+}
+
+});
+return ___scope___.entry = "index.js";
+});

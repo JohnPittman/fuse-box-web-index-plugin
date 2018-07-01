@@ -1,0 +1,7 @@
+.vscode
+.*cache
+*.log
+node_modules
+lib
+typings
+dist

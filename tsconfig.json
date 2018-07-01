@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "baseUrl": ".",
+        "declaration": false,
+        "declarationDir": "typings",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "jsx": "preserve",
+        "lib": ["es2015", "es2016", "es2017", "dom"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "outDir": "lib",
+        "sourceMap": false,
+        "strict": true,
+        "target": "es2015",
+        "typeRoots": ["node_modules/@types"]
+    },
+    "exclude": ["src/**/*.test.*"],
+    "include": ["src"]
+}
