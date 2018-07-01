@@ -1,17 +1,15 @@
 {
-    "name": "@chickendinosaur/storex",
-    "version": "8.0.4",
+    "name": "@chickendinosaur/fuse-box-web-index-plugin",
+    "version": "1.0.0",
     "main": "lib/index.js",
     "typings": "typings/index.d.ts",
     "files": ["lib", "typings"],
     "scripts": {
-        "benchmark": "ts-node benchmarks/storex.benchmark.ts",
-        "benchmark-redux": "ts-node benchmarks/redux.benchmark.ts",
-        "build": "rm -rf lib typings && tsc --allowJS false --declaration",
+        "build": "rm -rf lib typings && tsc --allowJS false --declaration && npm run build-docs",
         "build-docs":
             "rm -rf docs && typedoc --out docs --theme minimal --mode file --exclude **/*.test.ts src",
-        "build-example":
-            "rm -rf example/dist && clear && cross-env NODE_ENV=production ts-node example/fuse.ts",
+        "build-example-1":
+            "rm -rf example/dist && clear && cross-env NODE_ENV=production ts-node examples/fuse.ts",
         "lint": "tslint --fix \"src/**/*.{ts,tsx}\"",
         "prepare": "npm run test && npm run lint && npm run build",
         "test": "jest -o",
@@ -29,16 +27,7 @@
     },
     "license": "MIT",
     "description": "Front-end state management system.",
-    "keywords": [
-        "action",
-        "dispatcher",
-        "distribution",
-        "event",
-        "management",
-        "reducer",
-        "state",
-        "store"
-    ],
+    "keywords": ["fuse-box", "plugin", "bundler", "javascript", "typescript"],
     "private": false,
     "repository": {
         "type": "git",
@@ -51,13 +40,13 @@
     "peerDependencies": {
         "fuse-box": "^3.0.0"
     },
-    "dependencies": {},
+    "dependencies": {
+        "husky": "^0.14.3"
+    },
     "devDependencies": {
         "@types/jest": "^22.2.3",
-        "benchmark": "^2.1.4",
         "cross-env": "^5.2.0",
         "fuse-box": "^3.3.0",
-        "husky": "^1.0.0-rc.1",
         "jest": "^22.4.3",
         "prettier": "^1.12.0",
         "ts-jest": "^22.4.4",

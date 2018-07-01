@@ -11,14 +11,22 @@ export interface TagInfo {
 }
 
 export interface WebIndexPluginOptions {
+    // The main filename. Default is `index.html`.
     outFilePath?: string;
+    // The relative url bundles are served from. Default is `/`. Empty is set with `.`
     publicPath?: string;
     tags?: {
+        // Template placeholder names. Bundle tags all start with a '$'.
+        // Leaving any of these as 'undefined' will generate a default tag and order.
         $scriptBundles?: (bundlePath: string, filename: string) => TagInfo;
         $cssBundles?: (bundlePath: string, filename: string) => TagInfo;
-        other?: { [key: string]: string };
+        other?: {
+            // Key value pairs. The keys can be anything you want although I prefer staying with a '$' for consitency.
+            [key: string]: string;
+        };
     };
-    templateFilePath?: string;
+    // Provide a path to your own template.
+    template?: ((state: any) => string) | string;
 }
 
 export class WebIndexPlugin implements Plugin {
@@ -156,10 +164,12 @@ export class WebIndexPlugin implements Plugin {
         let indexHTML;
 
         // Hydrate .html template.
-        if (opts && opts.templateFilePath) {
+        if (opts && opts.template) {
             const createIndex =
-                require(ensureAbsolutePath(opts.templateFilePath)).default ||
-                require(ensureAbsolutePath(opts.templateFilePath));
+                typeof opts.template === 'string'
+                    ? require(ensureAbsolutePath(opts.template)).default ||
+                      require(ensureAbsolutePath(opts.template))
+                    : opts.template;
 
             indexHTML = createIndex(templateState);
         } else {

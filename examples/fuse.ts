@@ -56,7 +56,7 @@ context(() => {
                                 $title: 'Custom Title'
                             }
                         },
-                        templateFilePath: 'src/templates/index.ts'
+                        template: 'src/templates/index.ts'
                     })
                 ],
                 target: 'browser@es5'

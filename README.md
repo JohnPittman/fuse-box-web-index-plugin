@@ -1,8 +1,6 @@
 # Description
 
-Robust WebIndexPlugin for FuseBox. Due to so many different ways to implement tags, resource loading, and the ongoing evolution of how the browser parses HTML, the only way to satisfy such a dynamic file is to not limit options of anything. This plugin let's you gain access to what FuseBox produces to override what and what order things are injected while keeping the rest just a simple templating engine.
-
-[View](https://chickendinosaur.github.io/storex/) documentation.
+Robust WebIndexPlugin for FuseBox. Due to so many different ways to implement tags, resource loading, and the ongoing evolution of how the browser parses HTML, the only way to satisfy such a dynamic file is to not limit it. This plugin let's you gain access to what FuseBox produces and override what gets injected as well as what the order of the bundle groups while keeping the rest of it simple options with templating.
 
 # Goal
 
@@ -18,6 +16,22 @@ Robust WebIndexPlugin for FuseBox. Due to so many different ways to implement ta
 
 ```
 $ npm i @chickendinosaur/fuse-box-web-index-plugin
+```
+
+## Docs
+
+*   [API](./docs/index.html)
+
+## Examples
+
+```
+$ npm i
+```
+
+*   [Example 1](./examples/fuse.ts)
+
+```
+$ npm run build-example-1
 ```
 
 ## Usage
@@ -43,7 +57,7 @@ interface WebIndexPluginOptions {
         }
     };
     // Provide a path to your own template.
-    templateFilePath?: string;
+    template?: ((state: any) => string) | string;
 }
 
 interface TagInfo {
@@ -61,7 +75,7 @@ interface TagInfo {
 
 ```
 $ git clone https://github.com/chickendinosaur/fuse-box-web-index-plugin.git
-$ cd storex
+$ cd fuse-box-web-index-plugin
 $ npm i
 ```
 
@@ -69,12 +83,6 @@ $ npm i
 
 ```
 $ npm run build
-```
-
-## Benchmarking
-
-```
-$ npm run benchmark
 ```
 
 ## Test
