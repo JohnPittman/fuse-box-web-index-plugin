@@ -61,6 +61,13 @@ context(() => {
                             }
                         },
                         template: 'src/templates/index.ts'
+                    }),
+                    CustomWebIndexPlugin({
+                        outFilePath: 'index-basic.html'
+                    }),
+                    CustomWebIndexPlugin({
+                        outFilePath: 'index-publicPath.html',
+                        publicPath: 'http://www.google.com/'
                     })
                 ],
                 target: 'browser@es5'
