@@ -1,33 +1,52 @@
 import 'fuse-box/core/File';
 import { Plugin } from 'fuse-box/core/WorkflowContext';
 import { BundleProducer } from 'fuse-box/core/BundleProducer';
-import * as fs from 'fs';
 import { ensureAbsolutePath, joinFuseBoxPath } from 'fuse-box/Utils';
 import * as path from 'path';
 
 export interface TagInfo {
+    /**
+     * Placement order of a tag in a bundle group.
+     * Lower numbers are highest priority.
+     */
     orderNum?: number;
+    /**
+     * HTML resource tag.
+     * Ex. <link ...>
+     */
     tag: string;
 }
 
 export interface WebIndexPluginOptions {
-    // The main filename. Default is `index.html`.
+    /**
+     * The main filename. Default is `index.html`.
+     */
     outFilePath?: string;
-    // The relative url bundles are served from. Default is `/`. Empty is set with `.`
+    /**
+     * The relative url bundles are served from.
+     * Default is `/`. Empty is set with `.`
+     */
     publicPath?: string;
+    /**
+     * Bundle creation callbacks to create tag information from FuseBox bundles.
+     * Leaving any of these as 'undefined' will generate a default tag and order.
+     */
     tags?: {
-        // Template placeholder names. Bundle tags all start with a '$'.
-        // Leaving any of these as 'undefined' will generate a default tag and order.
         $scriptBundles?: (bundlePath: string, filename: string) => TagInfo;
         $cssBundles?: (bundlePath: string, filename: string) => TagInfo;
-        other?: {
-            // Key value pairs. The keys can be anything you want although I prefer staying with a '$' for consitency.
-            [key: string]: string;
-        };
     };
-    // Templates are callback that return a ES6 template string.
-    // Provide a path to your own template.
+    /**
+     * Templates are callback that return a ES6 template string.
+     * Provide a path to your own template.
+     */
     template?: ((state: any) => string) | string;
+    /**
+     * Basic templating key/value pairs for anything else to be injected into the document.
+     * First character of the strings will be removed if it's a $.
+     */
+    $?: {
+        [key: string]: string;
+    };
 }
 
 export class WebIndexPlugin implements Plugin {
@@ -50,10 +69,11 @@ export class WebIndexPlugin implements Plugin {
         <html lang="en">
             <head>
                 <meta charset="utf-8">
+                <title>Untitled</title>
+                ${state.scriptBundles}
                 ${state.cssBundles}
             </head>
             <body>
-                ${state.scriptBundles}
             </body>
         </html>
         `;
@@ -67,7 +87,7 @@ export class WebIndexPlugin implements Plugin {
             opts && opts.tags && opts.tags.$scriptBundles ? opts.tags.$scriptBundles : null;
         const cssBundleTransformer =
             opts && opts.tags && opts.tags.$cssBundles ? opts.tags.$cssBundles : null;
-        const otherTags = opts && opts.tags && opts.tags.other ? opts.tags.other : null;
+        const miscEntries = opts && opts.$ ? opts.$ : null;
 
         // Create JavaScript tag entries.
         const scriptTagInfos: TagInfo[] = [];
@@ -152,14 +172,14 @@ export class WebIndexPlugin implements Plugin {
             cssBundles: cssTags
         };
 
-        // Create other tags entries.
-        if (otherTags !== null) {
-            for (const key in otherTags) {
-                // Remove $ if it exist.
+        // Inject anything else via $ group.
+        if (miscEntries !== null) {
+            for (const key in miscEntries) {
+                // Remove $ char if it exists.
                 if (key.charAt(0) === '$') {
-                    templateState[key.substring(1)] = otherTags[key];
+                    templateState[key.substring(1)] = miscEntries[key];
                 } else {
-                    templateState[key] = otherTags[key];
+                    templateState[key] = miscEntries[key];
                 }
             }
         }

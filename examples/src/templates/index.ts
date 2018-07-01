@@ -7,8 +7,8 @@ export default (state: { cssBundles: string; scriptBundles: string; title: strin
     <meta charset="utf-8">
 
     <title>${state.title}</title>
-    ${state.cssBundles}
     ${state.scriptBundles}
+    ${state.cssBundles}
 </head>
 
 <body>

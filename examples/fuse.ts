@@ -55,12 +55,12 @@ context(() => {
                                     default:
                                         return { tag: '' };
                                 }
-                            },
-                            other: {
-                                $title: 'Custom Title'
                             }
                         },
-                        template: 'src/templates/index.ts'
+                        template: 'src/templates/index.ts',
+                        $: {
+                            $title: 'Custom Title'
+                        }
                     }),
                     CustomWebIndexPlugin({
                         outFilePath: 'index-basic.html'
