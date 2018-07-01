@@ -5,13 +5,13 @@
     "typings": "typings/index.d.ts",
     "files": ["lib", "typings"],
     "scripts": {
-        "build": "rm -rf lib typings && tsc --allowJS false --declaration && npm run build-docs",
+        "build": "rm -rf lib typings && tsc --allowJS false --declaration",
         "build-docs":
             "rm -rf docs && typedoc --out docs --theme minimal --mode file --exclude **/*.test.ts src",
         "build-example-1":
             "rm -rf example/dist && clear && cross-env NODE_ENV=production ts-node examples/fuse.ts",
         "lint": "tslint --fix \"src/**/*.{ts,tsx}\"",
-        "prepare": "npm run test && npm run lint && npm run build",
+        "prepare": "npm run test && npm run build",
         "test": "jest -o",
         "test:watch": "jest --watch"
     },
