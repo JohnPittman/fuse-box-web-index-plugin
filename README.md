@@ -20,7 +20,7 @@ $ npm i @chickendinosaur/fuse-box-web-index-plugin
 
 ## Docs
 
-*   [API](./docs/index.html)
+*   [API](https://chickendinosaur.github.io/fuse-box-web-index-plugin)
 
 ## Examples
 
