@@ -40,6 +40,8 @@ context(() => {
                                         return {
                                             tag
                                         };
+                                    default:
+                                        return { tag: '' };
                                 }
                             },
                             $cssBundles: (bundlePath, filename) => {
@@ -50,6 +52,8 @@ context(() => {
                                         return {
                                             tag
                                         };
+                                    default:
+                                        return { tag: '' };
                                 }
                             },
                             other: {
