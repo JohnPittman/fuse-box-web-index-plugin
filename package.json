@@ -1,15 +1,16 @@
 {
     "name": "@chickendinosaur/fuse-box-web-index-plugin",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "main": "lib/index.js",
     "typings": "typings/index.d.ts",
-    "files": ["lib", "typings"],
+    "files": [
+        "lib",
+        "typings"
+    ],
     "scripts": {
         "build": "rm -rf lib typings && tsc --allowJS false --declaration",
-        "build-docs":
-            "rm -rf docs && typedoc --out docs --theme minimal --mode file --exclude **/*.test.ts src",
-        "build-example-1":
-            "rm -rf examples/dist && clear && cross-env NODE_ENV=production ts-node examples/fuse.ts",
+        "build-docs": "rm -rf docs && typedoc --out docs --theme minimal --mode file --exclude **/*.test.ts src",
+        "build-example-1": "rm -rf examples/dist && clear && cross-env NODE_ENV=production ts-node examples/fuse.ts",
         "lint": "tslint --fix \"src/**/*.{ts,tsx}\"",
         "prepare": "npm run test && npm run build",
         "test": "jest -o",
@@ -27,7 +28,13 @@
     },
     "license": "MIT",
     "description": "Front-end state management system.",
-    "keywords": ["fuse-box", "plugin", "bundler", "javascript", "typescript"],
+    "keywords": [
+        "fuse-box",
+        "plugin",
+        "bundler",
+        "javascript",
+        "typescript"
+    ],
     "private": false,
     "repository": {
         "type": "git",
