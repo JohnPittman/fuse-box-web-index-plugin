@@ -25,7 +25,7 @@ context(() => {
                     // they are inlined in development mode, therefore, no files.
                     WebIndexPlugin({
                         outFilePath: 'index.html',
-                        tags: {
+                        bundleTags: {
                             scriptBundles: (bundlePath, filename) => {
                                 const tag = `\n<script type="text/javascript" src=${bundlePath} defer></script>`;
 

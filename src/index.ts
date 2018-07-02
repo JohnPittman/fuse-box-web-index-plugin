@@ -31,7 +31,7 @@ export interface WebIndexPluginOptions {
      * Bundle creation callbacks to create tag information from FuseBox bundles.
      * Leaving any of these as 'undefined' will generate a default tag and order.
      */
-    tags?: {
+    bundleTags?: {
         scriptBundles?: (bundlePath: string, filename: string) => TagInfo;
         cssBundles?: (bundlePath: string, filename: string) => TagInfo;
     };
@@ -80,12 +80,16 @@ export class WebIndexPlugin implements Plugin {
 
     private async generate(producer: BundleProducer) {
         const opts = this.opts;
-        const publicPath = opts && opts.publicPath ? opts.publicPath : '/';
+        const publicPath = opts && opts.publicPath ? opts.publicPath : '//';
         const outFilePath = opts && opts.outFilePath ? opts.outFilePath : 'index.html';
         const scriptBundleTransformer =
-            opts && opts.tags && opts.tags.scriptBundles ? opts.tags.scriptBundles : null;
+            opts && opts.bundleTags && opts.bundleTags.scriptBundles
+                ? opts.bundleTags.scriptBundles
+                : null;
         const cssBundleTransformer =
-            opts && opts.tags && opts.tags.cssBundles ? opts.tags.cssBundles : null;
+            opts && opts.bundleTags && opts.bundleTags.cssBundles
+                ? opts.bundleTags.cssBundles
+                : null;
         const miscEntries = opts && opts.$ ? opts.$ : null;
 
         // Create JavaScript tag entries.
@@ -109,7 +113,7 @@ export class WebIndexPlugin implements Plugin {
                     // Get filename.
                     const filename = `${path.basename(bundlePath, '.js')}.js`;
 
-                    // Generate tags.
+                    // Generate bundleTags.
                     if (scriptBundleTransformer !== null) {
                         const tagInfo = scriptBundleTransformer(
                             `${path.join(publicPath, bundlePath)}`,
@@ -142,7 +146,7 @@ export class WebIndexPlugin implements Plugin {
                 // Get filename.
                 const filename = `${path.basename(bundlePath, '.css')}.css`;
 
-                // Generate tags.
+                // Generate bundleTags.
                 if (cssBundleTransformer !== null) {
                     const tagInfo = cssBundleTransformer(
                         `${path.join(publicPath, bundlePath)}`,
@@ -197,7 +201,7 @@ export class WebIndexPlugin implements Plugin {
     }
 
     private createTagsFromTagInfos(tagInfos: TagInfo[]) {
-        let tags = '';
+        let bundleTags = '';
 
         // Sort script bundles by declared order.
         tagInfos.sort((a: TagInfo, b: TagInfo) => {
@@ -206,10 +210,10 @@ export class WebIndexPlugin implements Plugin {
 
         let i = -1;
         while (++i < tagInfos.length) {
-            tags += tagInfos[i].tag;
+            bundleTags += tagInfos[i].tag;
         }
 
-        return tags;
+        return bundleTags;
     }
 }
 
