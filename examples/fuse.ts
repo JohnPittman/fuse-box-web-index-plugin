@@ -46,6 +46,7 @@ context(() => {
                                             html: tag
                                         };
                                     default:
+                                        // Returning '' will remove any script bundle not listed.
                                         return { html: tag };
                                 }
                             },

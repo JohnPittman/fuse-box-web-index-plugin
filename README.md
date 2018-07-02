@@ -35,7 +35,7 @@ Output will be in <b>examples/dist</b>.
 
 <b>MUST RUN AFTER QUANTUM FOR CSS FILES TO BE ACCESSED.</b>
 
-*   [Example](./examples/fuse.ts)
+*   [Example](https://github.com/chickendinosaur/fuse-box-web-index-plugin/blob/master/examples/fuse.ts)
 
 # Development
 
