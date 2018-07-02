@@ -1,5 +1,4 @@
 .vscode
-.fusebox
 .*cache
 *.log
 node_modules
