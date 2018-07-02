@@ -1,7 +1,7 @@
 import { FuseBox, QuantumPlugin, CSSPlugin } from 'fuse-box';
 import { task, context } from 'fuse-box/sparky';
 
-import CustomWebIndexPlugin from '../src';
+import WebIndexPlugin from '../src';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -23,10 +23,10 @@ context(() => {
                     // Generate index.html.
                     // Must run after QuantumPlugin to have access to .css filenames since
                     // they are inlined in development mode, therefore, no files.
-                    CustomWebIndexPlugin({
+                    WebIndexPlugin({
                         outFilePath: 'index.html',
                         tags: {
-                            $scriptBundles: (bundlePath, filename) => {
+                            scriptBundles: (bundlePath, filename) => {
                                 const tag = `\n<script type="text/javascript" src=${bundlePath} defer></script>`;
 
                                 switch (filename) {
@@ -44,7 +44,7 @@ context(() => {
                                         return { tag: '' };
                                 }
                             },
-                            $cssBundles: (bundlePath, filename) => {
+                            cssBundles: (bundlePath, filename) => {
                                 const tag = `\n<link type="text/stylesheet" href=${bundlePath} preload>`;
 
                                 switch (filename) {
@@ -59,13 +59,13 @@ context(() => {
                         },
                         template: 'src/templates/index.ts',
                         $: {
-                            $title: 'Custom Title'
+                            title: 'Custom Title'
                         }
                     }),
-                    CustomWebIndexPlugin({
+                    WebIndexPlugin({
                         outFilePath: 'index-basic.html'
                     }),
-                    CustomWebIndexPlugin({
+                    WebIndexPlugin({
                         outFilePath: 'index-publicPath.html',
                         publicPath: 'http://www.google.com/'
                     })

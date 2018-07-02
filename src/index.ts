@@ -32,8 +32,8 @@ export interface WebIndexPluginOptions {
      * Leaving any of these as 'undefined' will generate a default tag and order.
      */
     tags?: {
-        $scriptBundles?: (bundlePath: string, filename: string) => TagInfo;
-        $cssBundles?: (bundlePath: string, filename: string) => TagInfo;
+        scriptBundles?: (bundlePath: string, filename: string) => TagInfo;
+        cssBundles?: (bundlePath: string, filename: string) => TagInfo;
     };
     /**
      * Templates are callback that return a ES6 template string.
@@ -42,7 +42,6 @@ export interface WebIndexPluginOptions {
     template?: ((state: any) => string) | string;
     /**
      * Basic templating key/value pairs for anything else to be injected into the document.
-     * First character of the strings will be removed if it's a $.
      */
     $?: {
         [key: string]: string;
@@ -84,9 +83,9 @@ export class WebIndexPlugin implements Plugin {
         const publicPath = opts && opts.publicPath ? opts.publicPath : '/';
         const outFilePath = opts && opts.outFilePath ? opts.outFilePath : 'index.html';
         const scriptBundleTransformer =
-            opts && opts.tags && opts.tags.$scriptBundles ? opts.tags.$scriptBundles : null;
+            opts && opts.tags && opts.tags.scriptBundles ? opts.tags.scriptBundles : null;
         const cssBundleTransformer =
-            opts && opts.tags && opts.tags.$cssBundles ? opts.tags.$cssBundles : null;
+            opts && opts.tags && opts.tags.cssBundles ? opts.tags.cssBundles : null;
         const miscEntries = opts && opts.$ ? opts.$ : null;
 
         // Create JavaScript tag entries.
@@ -174,14 +173,7 @@ export class WebIndexPlugin implements Plugin {
 
         // Inject anything else via $ group.
         if (miscEntries !== null) {
-            for (const key in miscEntries) {
-                // Remove $ char if it exists.
-                if (key.charAt(0) === '$') {
-                    templateState[key.substring(1)] = miscEntries[key];
-                } else {
-                    templateState[key] = miscEntries[key];
-                }
-            }
+            Object.assign(templateState, miscEntries);
         }
         // console.log(templateState);
 
