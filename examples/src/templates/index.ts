@@ -1,4 +1,4 @@
-export default (state: { cssBundles: string; scriptBundles: string; title: string }) => {
+export default (state: { css: string; script: string; title: string }) => {
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +7,8 @@ export default (state: { cssBundles: string; scriptBundles: string; title: strin
     <meta charset="utf-8">
 
     <title>${state.title}</title>
-    ${state.scriptBundles}
-    ${state.cssBundles}
+    ${state.css}
+    ${state.script}
 </head>
 
 <body>

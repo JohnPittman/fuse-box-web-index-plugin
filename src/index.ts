@@ -4,37 +4,29 @@ import { BundleProducer } from 'fuse-box/core/BundleProducer';
 import { ensureAbsolutePath, joinFuseBoxPath } from 'fuse-box/Utils';
 import * as path from 'path';
 
-export interface TagInfo {
+export interface HTMLOutputInfo {
     /**
      * Placement order of a tag in a bundle group.
      * Lower numbers are highest priority.
      */
     orderNum?: number;
     /**
-     * HTML resource tag.
+     * HTML.
      * Ex. <link ...>
      */
-    tag: string;
+    html: string;
 }
 
 export interface WebIndexPluginOptions {
     /**
      * The main filename. Default is `index.html`.
      */
-    outFilePath?: string;
+    outFile?: string;
     /**
      * The relative url bundles are served from.
      * Default is `/`. Empty is set with `.`
      */
     publicPath?: string;
-    /**
-     * Bundle creation callbacks to create tag information from FuseBox bundles.
-     * Leaving any of these as 'undefined' will generate a default tag and order.
-     */
-    bundleTags?: {
-        scriptBundles?: (bundlePath: string, filename: string) => TagInfo;
-        cssBundles?: (bundlePath: string, filename: string) => TagInfo;
-    };
     /**
      * Templates are callback that return a ES6 template string.
      * Provide a path to your own template.
@@ -45,6 +37,14 @@ export interface WebIndexPluginOptions {
      */
     $?: {
         [key: string]: string;
+    };
+    /**
+     * Bundle creation callbacks to create tag information from FuseBox bundles.
+     * Leaving any of these as 'undefined' will generate a default tag and order.
+     */
+    $bundles?: {
+        script?: (bundlePath: string, filename: string) => HTMLOutputInfo;
+        css?: (bundlePath: string, filename: string) => HTMLOutputInfo;
     };
 }
 
@@ -62,15 +62,15 @@ export class WebIndexPlugin implements Plugin {
         });
     }
 
-    private generateDefaultTemplate(state: { cssBundles: string; scriptBundles: string }) {
+    private generateDefaultTemplate(state: { css: string; script: string }) {
         return `
         <!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="utf-8">
                 <title>Untitled</title>
-                ${state.scriptBundles}
-                ${state.cssBundles}
+                ${state.css}
+                ${state.script}
             </head>
             <body>
             </body>
@@ -81,19 +81,15 @@ export class WebIndexPlugin implements Plugin {
     private async generate(producer: BundleProducer) {
         const opts = this.opts;
         const publicPath = opts && opts.publicPath ? opts.publicPath : '//';
-        const outFilePath = opts && opts.outFilePath ? opts.outFilePath : 'index.html';
+        const outFile = opts && opts.outFile ? opts.outFile : 'index.html';
         const scriptBundleTransformer =
-            opts && opts.bundleTags && opts.bundleTags.scriptBundles
-                ? opts.bundleTags.scriptBundles
-                : null;
+            opts && opts.$bundles && opts.$bundles.script ? opts.$bundles.script : null;
         const cssBundleTransformer =
-            opts && opts.bundleTags && opts.bundleTags.cssBundles
-                ? opts.bundleTags.cssBundles
-                : null;
+            opts && opts.$bundles && opts.$bundles.css ? opts.$bundles.css : null;
         const miscEntries = opts && opts.$ ? opts.$ : null;
 
         // Create JavaScript tag entries.
-        const scriptTagInfos: TagInfo[] = [];
+        const scriptHTMLOutputInfos: HTMLOutputInfo[] = [];
         let scriptTags = '';
 
         const bundles = producer.sortBundles();
@@ -113,7 +109,7 @@ export class WebIndexPlugin implements Plugin {
                     // Get filename.
                     const filename = `${path.basename(bundlePath, '.js')}.js`;
 
-                    // Generate bundleTags.
+                    // Generate $bundles.
                     if (scriptBundleTransformer !== null) {
                         const tagInfo = scriptBundleTransformer(
                             `${path.join(publicPath, bundlePath)}`,
@@ -121,7 +117,7 @@ export class WebIndexPlugin implements Plugin {
                         );
 
                         if (tagInfo) {
-                            scriptTagInfos.push(tagInfo);
+                            scriptHTMLOutputInfos.push(tagInfo);
                         }
                     } else {
                         scriptTags += `\n<script type="text/javascript" src=${path.join(
@@ -134,11 +130,11 @@ export class WebIndexPlugin implements Plugin {
         });
 
         if (scriptBundleTransformer !== null) {
-            scriptTags += this.createTagsFromTagInfos(scriptTagInfos);
+            scriptTags += this.createTagsFromHTMLOutputInfos(scriptHTMLOutputInfos);
         }
 
         // Create CSS tag entries.
-        const cssTagInfos: TagInfo[] = [];
+        const cssHTMLOutputInfos: HTMLOutputInfo[] = [];
         let cssTags = '';
 
         if (producer.injectedCSSFiles.size > 0) {
@@ -146,7 +142,7 @@ export class WebIndexPlugin implements Plugin {
                 // Get filename.
                 const filename = `${path.basename(bundlePath, '.css')}.css`;
 
-                // Generate bundleTags.
+                // Generate $bundles.
                 if (cssBundleTransformer !== null) {
                     const tagInfo = cssBundleTransformer(
                         `${path.join(publicPath, bundlePath)}`,
@@ -154,7 +150,7 @@ export class WebIndexPlugin implements Plugin {
                     );
 
                     if (tagInfo) {
-                        cssTagInfos.push(tagInfo);
+                        cssHTMLOutputInfos.push(tagInfo);
                     }
                 } else {
                     cssTags += `<link rel="stylesheet" href="${path.join(
@@ -166,13 +162,13 @@ export class WebIndexPlugin implements Plugin {
         }
 
         if (cssBundleTransformer !== null) {
-            cssTags += this.createTagsFromTagInfos(cssTagInfos);
+            cssTags += this.createTagsFromHTMLOutputInfos(cssHTMLOutputInfos);
         }
 
         // Create template state from bundles.
         const templateState = {
-            scriptBundles: scriptTags,
-            cssBundles: cssTags
+            script: scriptTags,
+            css: cssTags
         };
 
         // Inject anything else via $ group.
@@ -197,23 +193,23 @@ export class WebIndexPlugin implements Plugin {
         }
 
         // Write .html file to disk.
-        producer.fuse.context.output.writeToOutputFolder(outFilePath, indexHTML);
+        producer.fuse.context.output.writeToOutputFolder(outFile, indexHTML);
     }
 
-    private createTagsFromTagInfos(tagInfos: TagInfo[]) {
-        let bundleTags = '';
+    private createTagsFromHTMLOutputInfos(tagInfos: HTMLOutputInfo[]) {
+        let $bundles = '';
 
         // Sort script bundles by declared order.
-        tagInfos.sort((a: TagInfo, b: TagInfo) => {
+        tagInfos.sort((a: HTMLOutputInfo, b: HTMLOutputInfo) => {
             return (a.orderNum ? a.orderNum : 0) - (b.orderNum ? b.orderNum : 0);
         });
 
         let i = -1;
         while (++i < tagInfos.length) {
-            bundleTags += tagInfos[i].tag;
+            $bundles += tagInfos[i].html;
         }
 
-        return bundleTags;
+        return $bundles;
     }
 }
 

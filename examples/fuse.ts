@@ -24,49 +24,50 @@ context(() => {
                     // Must run after QuantumPlugin to have access to .css filenames since
                     // they are inlined in development mode, therefore, no files.
                     WebIndexPlugin({
-                        outFilePath: 'index.html',
-                        bundleTags: {
-                            scriptBundles: (bundlePath, filename) => {
+                        outFile: 'index.html',
+                        template: 'src/templates/index.ts',
+                        // Map html to a template key.
+                        $: {
+                            title: 'Custom Title'
+                        },
+                        $bundles: {
+                            script: (bundlePath, filename) => {
                                 const tag = `\n<script type="text/javascript" src=${bundlePath} defer></script>`;
 
                                 switch (filename) {
+                                    case 'vendor.js':
+                                        return {
+                                            html: tag
+                                        };
                                     // app.js would normally be placed 2nd below vendor.
                                     case 'app.js':
                                         return {
                                             orderNum: -1,
-                                            tag
-                                        };
-                                    case 'vendor.js':
-                                        return {
-                                            tag
+                                            html: tag
                                         };
                                     default:
-                                        return { tag: '' };
+                                        return { html: tag };
                                 }
                             },
-                            cssBundles: (bundlePath, filename) => {
+                            css: (bundlePath, filename) => {
                                 const tag = `\n<link type="text/stylesheet" href=${bundlePath} preload>`;
 
                                 switch (filename) {
                                     case 'styles.css':
                                         return {
-                                            tag
+                                            html: tag
                                         };
                                     default:
-                                        return { tag: '' };
+                                        return { html: tag };
                                 }
                             }
-                        },
-                        template: 'src/templates/index.ts',
-                        $: {
-                            title: 'Custom Title'
                         }
                     }),
                     WebIndexPlugin({
-                        outFilePath: 'index-basic.html'
+                        outFile: 'index-basic.html'
                     }),
                     WebIndexPlugin({
-                        outFilePath: 'index-publicPath.html',
+                        outFile: 'index-publicPath.html',
                         publicPath: 'http://www.google.com/'
                     })
                 ],

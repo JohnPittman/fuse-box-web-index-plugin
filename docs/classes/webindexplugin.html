@@ -919,7 +919,7 @@ img { max-width: 100%; }
 					<a href="webindexplugin.html#opts" class="tsd-kind-icon">opts</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a href="webindexplugin.html#createtagsfromtaginfos" class="tsd-kind-icon">create<wbr>Tags<wbr>From<wbr>Tag<wbr>Infos</a>
+					<a href="webindexplugin.html#createtagsfromhtmloutputinfos" class="tsd-kind-icon">create<wbr>Tags<wbr>FromHTMLOutput<wbr>Infos</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a href="webindexplugin.html#generate" class="tsd-kind-icon">generate</a>
@@ -933,7 +933,7 @@ img { max-width: 100%; }
 			</ul>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/taginfo.html" class="tsd-kind-icon">Tag<wbr>Info</a>
+			<a href="../interfaces/htmloutputinfo.html" class="tsd-kind-icon">HTMLOutput<wbr>Info</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="../interfaces/webindexpluginoptions.html" class="tsd-kind-icon">Web<wbr>Index<wbr>Plugin<wbr>Options</a>
@@ -975,7 +975,7 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="webindexplugin.html#createtagsfromtaginfos" class="tsd-kind-icon">create<wbr>Tags<wbr>From<wbr>Tag<wbr>Infos</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="webindexplugin.html#createtagsfromhtmloutputinfos" class="tsd-kind-icon">create<wbr>Tags<wbr>FromHTMLOutput<wbr>Infos</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="webindexplugin.html#generate" class="tsd-kind-icon">generate</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="webindexplugin.html#generatedefaulttemplate" class="tsd-kind-icon">generate<wbr>Default<wbr>Template</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="webindexplugin.html#producerend" class="tsd-kind-icon">producer<wbr>End</a></li>
@@ -1026,22 +1026,22 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-				<a name="createtagsfromtaginfos" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Tags<wbr>From<wbr>Tag<wbr>Infos</h3>
+				<a name="createtagsfromhtmloutputinfos" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Tags<wbr>FromHTMLOutput<wbr>Infos</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<li class="tsd-signature tsd-kind-icon">create<wbr>Tags<wbr>From<wbr>Tag<wbr>Infos<span class="tsd-signature-symbol">(</span>tagInfos<span class="tsd-signature-symbol">: </span><a href="../interfaces/taginfo.html" class="tsd-signature-type">TagInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					<li class="tsd-signature tsd-kind-icon">create<wbr>Tags<wbr>FromHTMLOutput<wbr>Infos<span class="tsd-signature-symbol">(</span>tagInfos<span class="tsd-signature-symbol">: </span><a href="../interfaces/htmloutputinfo.html" class="tsd-signature-type">HTMLOutputInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in index.ts:203</li>
+								<li>Defined in index.ts:199</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>tagInfos: <a href="../interfaces/taginfo.html" class="tsd-signature-type">TagInfo</a><span class="tsd-signature-symbol">[]</span></h5>
+								<h5>tagInfos: <a href="../interfaces/htmloutputinfo.html" class="tsd-signature-type">HTMLOutputInfo</a><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1090,10 +1090,10 @@ img { max-width: 100%; }
 								<h5>state: <span class="tsd-signature-type">object</span></h5>
 								<ul class="tsd-parameters">
 									<li class="tsd-parameter">
-										<h5>css<wbr>Bundles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										<h5>css<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 									</li>
 									<li class="tsd-parameter">
-										<h5>script<wbr>Bundles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										<h5>script<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 									</li>
 								</ul>
 							</li>
