@@ -68,7 +68,7 @@ export class WebIndexPlugin implements Plugin {
         <html lang="en">
             <head>
                 <meta charset="utf-8">
-                <title>Untitled</title>
+                <title></title>
                 ${state.css}
                 ${state.script}
             </head>
