@@ -175,7 +175,6 @@ export class WebIndexPlugin implements Plugin {
         if (miscEntries !== null) {
             Object.assign(templateState, miscEntries);
         }
-        // console.log(templateState);
 
         // Acquire index.html template.
         let indexHTML;

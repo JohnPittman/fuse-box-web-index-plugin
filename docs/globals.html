@@ -948,48 +948,6 @@ img { max-width: 100%; }
 			<ul>
 				<li><a href="./examples/fuse.ts">Example</a></li>
 			</ul>
-			<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> WebIndexPlugin <span class="hljs-keyword">from</span> <span class="hljs-string">'@chickendinosaur/fuse-box-web-index-plugin'</span>;
-
-WebIndexPlugin({
-    <span class="hljs-attr">outFilePath</span>: <span class="hljs-string">'index.html'</span>,
-    <span class="hljs-attr">publicPath</span>: <span class="hljs-string">'http://www.google.com/'</span>,
-    <span class="hljs-attr">tags</span>: {
-        <span class="hljs-attr">$scriptBundles</span>: <span class="hljs-function">(<span class="hljs-params">bundlePath, filename</span>) =&gt;</span> {
-            <span class="hljs-keyword">const</span> tag = <span class="hljs-string">`\n&lt;script type="text/javascript" src=<span class="hljs-subst">${bundlePath}</span> defer&gt;&lt;/script&gt;`</span>;
-
-            <span class="hljs-keyword">switch</span> (filename) {
-                <span class="hljs-keyword">case</span> <span class="hljs-string">'app.js'</span>:
-                    <span class="hljs-keyword">return</span> {
-                        <span class="hljs-attr">orderNum</span>: <span class="hljs-number">-1</span>,
-                        tag
-                    };
-                <span class="hljs-keyword">case</span> <span class="hljs-string">'vendor.js'</span>:
-                    <span class="hljs-keyword">return</span> {
-                        tag
-                    };
-                <span class="hljs-keyword">default</span>:
-                    <span class="hljs-keyword">return</span> { <span class="hljs-attr">tag</span>: <span class="hljs-string">''</span> };
-            }
-        },
-        <span class="hljs-attr">$cssBundles</span>: <span class="hljs-function">(<span class="hljs-params">bundlePath, filename</span>) =&gt;</span> {
-            <span class="hljs-keyword">const</span> tag = <span class="hljs-string">`\n&lt;link type="text/stylesheet" href=<span class="hljs-subst">${bundlePath}</span> preload&gt;`</span>;
-
-            <span class="hljs-keyword">switch</span> (filename) {
-                <span class="hljs-keyword">case</span> <span class="hljs-string">'styles.css'</span>:
-                    <span class="hljs-keyword">return</span> {
-                        tag
-                    };
-                <span class="hljs-keyword">default</span>:
-                    <span class="hljs-keyword">return</span> { <span class="hljs-attr">tag</span>: <span class="hljs-string">''</span> };
-            }
-        }
-    },
-    <span class="hljs-attr">template</span>: <span class="hljs-string">'src/templates/index.ts'</span>,
-    <span class="hljs-attr">$</span>: {
-        <span class="hljs-attr">$title</span>: <span class="hljs-string">'Custom Title'</span>
-    }
-});
-</code></pre>
 			<h1 id="development">Development</h1>
 			<h2 id="installation">Installation</h2>
 			<pre><code><span class="hljs-meta">$</span><span class="bash"> git <span class="hljs-built_in">clone</span> https://github.com/chickendinosaur/fuse-box-web-index-plugin.git</span>

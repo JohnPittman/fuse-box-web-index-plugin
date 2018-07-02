@@ -37,50 +37,6 @@ Output will be in <b>examples/dist</b>.
 
 *   [Example](./examples/fuse.ts)
 
-```javascript
-import WebIndexPlugin from '@chickendinosaur/fuse-box-web-index-plugin';
-
-WebIndexPlugin({
-    outFilePath: 'index.html',
-    publicPath: 'http://www.google.com/',
-    tags: {
-        $scriptBundles: (bundlePath, filename) => {
-            const tag = `\n<script type="text/javascript" src=${bundlePath} defer></script>`;
-
-            switch (filename) {
-                case 'app.js':
-                    return {
-                        orderNum: -1,
-                        tag
-                    };
-                case 'vendor.js':
-                    return {
-                        tag
-                    };
-                default:
-                    return { tag: '' };
-            }
-        },
-        $cssBundles: (bundlePath, filename) => {
-            const tag = `\n<link type="text/stylesheet" href=${bundlePath} preload>`;
-
-            switch (filename) {
-                case 'styles.css':
-                    return {
-                        tag
-                    };
-                default:
-                    return { tag: '' };
-            }
-        }
-    },
-    template: 'src/templates/index.ts',
-    $: {
-        $title: 'Custom Title'
-    }
-});
-```
-
 # Development
 
 ## Installation
