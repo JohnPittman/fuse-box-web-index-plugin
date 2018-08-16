@@ -38,12 +38,12 @@
     "private": false,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/chickendinosaur/storex.git"
+        "url": "git+https://github.com/chickendinosaur/fuse-box-web-index-plugin.git"
     },
     "bugs": {
-        "url": "https://github.com/chickendinosaur/storex/issues"
+        "url": "https://github.com/chickendinosaur/fuse-box-web-index-plugin/issues"
     },
-    "homepage": "https://github.com/chickendinosaur/storex#readme",
+    "homepage": "https://github.com/chickendinosaur/fuse-box-web-index-plugin#readme",
     "peerDependencies": {
         "fuse-box": "^3.0.0"
     },
